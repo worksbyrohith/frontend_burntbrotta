@@ -1,0 +1,85 @@
+<div class="row mb-4 align-items-center">
+  <div class="col-md-8">
+    <h2>Manage Orders</h2>
+    <p class="text-muted">Process customer orders and update statuses in real-time.</p>
+  </div>
+  <div class="col-md-4">
+    <div class="input-group shadow-sm">
+      <span class="input-group-text bg-white"><i class="bi bi-funnel"></i></span>
+      <select class="form-select" [(ngModel)]="statusFilter" (change)="filterOrders()">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Preparing">Preparing</option>
+        <option value="Out for Delivery">Out for Delivery</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="text-center py-5">
+  <app-loader></app-loader>
+</div>
+
+<!-- Table -->
+<div class="card shadow-sm border-0" *ngIf="!isLoading">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light text-muted small text-uppercase">
+          <tr>
+            <th class="ps-4 py-3">Order ID</th>
+            <th class="py-3">Date</th>
+            <th class="py-3">Restaurant</th>
+            <th class="py-3">Customer</th>
+            <th class="py-3">Total</th>
+            <th class="py-3 text-center">Current Status</th>
+            <th class="py-3 text-end pe-4">Update Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredOrders.length === 0">
+            <td colspan="7" class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+              No orders found matching the criteria.
+            </td>
+          </tr>
+          <tr *ngFor="let o of filteredOrders">
+            <td class="ps-4 fw-bold">
+              <a [routerLink]="['/orders', o.orderId]" class="text-decoration-none">#{{ o.orderId }}</a>
+            </td>
+            <td>
+              <div class="small">{{ o.orderedAt | date:'shortDate' }}</div>
+              <div class="small text-muted">{{ o.orderedAt | date:'shortTime' }}</div>
+            </td>
+            <td>{{ o.restaurant?.name || 'Unknown' }}</td>
+            <td>
+              <div>{{ o.user?.name || 'Guest' }}</div>
+              <div class="small text-muted">{{ o.user?.email || 'N/A' }}</div>
+            </td>
+            <td class="fw-bold">{{ o.totalAmount | currency:'INR' }}</td>
+            <td class="text-center">
+              <span class="badge rounded-pill" [ngClass]="getStatusBadgeClass(o.status)">
+                {{ o.status }}
+              </span>
+            </td>
+            <td class="text-end pe-4">
+              <select class="form-select form-select-sm d-inline-block w-auto" 
+                      [value]="o.status" 
+                      (change)="updateStatus(o.orderId, $event)">
+                <option value="Pending" [disabled]="true">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Preparing">Preparing</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

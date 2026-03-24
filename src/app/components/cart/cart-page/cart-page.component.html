@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-12 mb-4">
+    <h2>Your Cart</h2>
+  </div>
+</div>
+
+<ng-container *ngIf="cartService.cartItems$ | async as cartItems">
+  <div *ngIf="cartItems.length === 0" class="text-center py-5 bg-light rounded-3 shadow-sm">
+    <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
+    <h4 class="mt-3">Your cart is empty</h4>
+    <p class="text-muted">Looks like you haven't added anything yet.</p>
+    <a routerLink="/restaurants" class="btn btn-primary mt-2">Browse Restaurants</a>
+  </div>
+
+  <div class="row" *ngIf="cartItems.length > 0">
+    <div class="col-lg-8 mb-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+          <h5 class="mb-0">Order Items</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-borderless align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th>Item</th>
+                  <th>Price</th>
+                  <th class="text-center">Quantity</th>
+                  <th class="text-end">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cartItems" class="border-bottom">
+                  <td>
+                    <h6 class="mb-0">{{ item.menuItem.name }}</h6>
+                    <small class="text-muted">{{ item.menuItem.category }}</small>
+                  </td>
+                  <td>{{ item.menuItem.price | currency:'INR' }}</td>
+                  <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                      <button class="btn btn-sm btn-outline-secondary" (click)="decreaseQuantity(item)">
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <span class="mx-3 fw-bold">{{ item.quantity }}</span>
+                      <button class="btn btn-sm btn-outline-secondary" (click)="increaseQuantity(item)">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td class="text-end fw-bold">{{ item.menuItem.price * item.quantity | currency:'INR' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Order Summary</h5>
+          
+          <div class="d-flex justify-content-between mb-3">
+            <span>Subtotal</span>
+            <span class="fw-bold">{{ cartService.getTotal() | currency:'INR' }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>Delivery Fee</span>
+            <span class="fw-bold">{{ 50 | currency:'INR' }}</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fs-5">Total</span>
+            <span class="fs-5 fw-bold text-primary">{{ cartService.getTotal() + 50 | currency:'INR' }}</span>
+          </div>
+
+          <div *ngIf="errorMessage" class="alert alert-danger py-2 px-3 small">
+            {{ errorMessage }}
+          </div>
+
+          <div class="mb-4">
+            <label for="address" class="form-label fw-bold">Delivery Address</label>
+            <textarea id="address" class="form-control" rows="3" placeholder="Enter your full delivery address" [(ngModel)]="deliveryAddress"></textarea>
+          </div>
+
+          <button class="btn btn-primary w-100 btn-lg" (click)="placeOrder()" [disabled]="isProcessing || cartItems.length === 0">
+            <span *ngIf="isProcessing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

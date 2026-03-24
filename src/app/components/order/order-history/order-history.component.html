@@ -1,0 +1,46 @@
+<div *ngIf="isLoading" class="text-center py-5">
+  <app-loader></app-loader>
+</div>
+
+<div class="row align-items-center mb-4" *ngIf="!isLoading">
+  <div class="col">
+    <h2>My Orders</h2>
+    <p class="text-muted">View your past and current orders.</p>
+  </div>
+</div>
+
+<div *ngIf="!isLoading && orders.length === 0" class="text-center py-5 bg-light rounded shadow-sm">
+  <i class="bi bi-clock-history text-muted" style="font-size: 4rem;"></i>
+  <h4 class="mt-3">No orders found</h4>
+  <p class="text-muted">You haven't placed any orders yet.</p>
+  <a routerLink="/restaurants" class="btn btn-primary mt-3 shadow-sm">Start Ordering</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 g-4" *ngIf="!isLoading && orders.length > 0">
+  <div class="col" *ngFor="let order of orders">
+    <div class="card h-100 shadow-sm border-0 order-card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold mb-0">Order #{{ order.orderId }}</h5>
+          <span class="badge rounded-pill" [ngClass]="getStatusBadgeClass(order.status)">
+            {{ order.status }}
+          </span>
+        </div>
+        
+        <p class="card-text text-muted mb-2 small">
+          <i class="bi bi-calendar"></i> {{ order.orderedAt | date:'medium' }}
+        </p>
+        <p class="card-text text-muted mb-3 small">
+          <i class="bi bi-shop"></i> {{ order.restaurant?.name || 'Restaurant Unavailable' }}
+        </p>
+        
+        <div class="d-flex justify-content-between align-items-center mt-auto border-top pt-3">
+          <span class="fs-5 fw-bold">{{ order.totalAmount | currency:'INR' }}</span>
+          <a [routerLink]="['/orders', order.orderId]" class="btn btn-outline-primary btn-sm rounded-pill shadow-sm">
+            View Details <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

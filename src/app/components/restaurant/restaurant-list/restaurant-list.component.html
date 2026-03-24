@@ -1,0 +1,53 @@
+<!-- BurntBrotta Hero Section -->
+<div class="row align-items-center mb-5 mt-3 hero-section">
+  <!-- Left Column: Typography -->
+  <div class="col-lg-6 mb-4 mb-lg-0">
+    <div class="hero-text pe-lg-4">
+      <div class="decorative-dot mb-3"></div>
+      <h1 class="display-4 fw-bolder hero-title text-secondary lh-1 mb-3">
+        Kitchen Disasters<br>Turned Delicious:
+      </h1>
+      <p class="fs-4 text-muted mb-4">The Chronicles of Burnt Brotta!</p>
+      
+      <div class="search-box position-relative mt-5 shadow-sm rounded-pill overflow-hidden border border-primary border-opacity-25 bg-white">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text bg-transparent border-0 text-primary ps-4">
+            <i class="bi bi-search"></i>
+          </span>
+          <input type="text" class="form-control border-0 bg-transparent shadow-none px-3 py-3 fs-5" 
+                 placeholder="Search restaurants by name or area..." 
+                 (input)="onSearch($event)">
+          <button class="btn btn-primary px-4 fw-bold rounded-pill m-1" type="button">Find Food</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Illustration (Mimicking Reference Image SVG style) -->
+  <div class="col-lg-6 d-none d-lg-block text-end">
+    <img src="https://amri-tah.github.io/burntbrotta.github.io/images/landing/r1.png" alt="Burnt Brotta Illustration" class="img-fluid w-100 object-fit-contain hero-image" style="max-height: 480px;">
+  </div>
+</div>
+
+<div class="row mb-4 mt-5">
+  <div class="col-12 text-center">
+    <h2 class="fw-bold border-bottom border-primary border-3 pb-2 d-inline-block">Popular Recipes & Places</h2>
+    <p class="text-muted mt-2 fs-5">We put recipes to the test, so you can savor the success!</p>
+  </div>
+</div>
+
+<div *ngIf="isLoading">
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isLoading && filteredRestaurants.length === 0" class="text-center py-5">
+  <i class="bi bi-shop text-muted" style="font-size: 4rem;"></i>
+  <h4 class="mt-3">No restaurants found</h4>
+  <p class="text-muted">Try a different search term.</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="!isLoading && filteredRestaurants.length > 0">
+  <div class="col" *ngFor="let restaurant of filteredRestaurants">
+    <app-restaurant-card [restaurant]="restaurant"></app-restaurant-card>
+  </div>
+</div>

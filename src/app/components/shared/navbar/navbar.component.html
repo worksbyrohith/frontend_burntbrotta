@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary" routerLink="/">BurntBrotta</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <ng-container *ngIf="authService.userRole$ | async as role">
+          
+          <!-- Customer Links -->
+          <ng-container *ngIf="role === 'Customer'">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/restaurants" routerLinkActive="active">Restaurants</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/orders" routerLinkActive="active">My Orders</a>
+            </li>
+          </ng-container>
+
+          <!-- Admin Links -->
+          <ng-container *ngIf="role === 'Admin'">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/restaurants" routerLinkActive="active">Manage Restaurants</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin/orders" routerLinkActive="active">Manage Orders</a>
+            </li>
+          </ng-container>
+        </ng-container>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <!-- Auth Links -->
+        <ng-container *ngIf="!(authService.userRole$ | async)">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+          </li>
+        </ng-container>
+
+        <!-- Profile / Cart Links for Authenticated -->
+        <ng-container *ngIf="authService.userRole$ | async as role">
+          <li class="nav-item" *ngIf="role === 'Customer'">
+            <a class="nav-link position-relative" routerLink="/cart" routerLinkActive="active">
+              <i class="bi bi-cart3"></i> Cart
+              <span *ngIf="(cartService.cartItems$ | async)?.length as count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ count }}
+              </span>
+            </a>
+          </li>
+          <li class="nav-item ms-3">
+            <button class="btn btn-outline-light btn-sm mt-1" (click)="logout()">Logout</button>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,64 @@
+<div *ngIf="isLoading">
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isLoading && restaurant">
+  <!-- Restaurant Header -->
+  <div class="card bg-dark text-white mb-4 border-0 rounded-3 overflow-hidden shadow-sm">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img [src]="restaurant.imageUrl || 'https://via.placeholder.com/600x400?text=Restaurant'" 
+             class="img-fluid rounded-start h-100" style="object-fit: cover;" [alt]="restaurant.name">
+      </div>
+      <div class="col-md-8 d-flex align-items-center">
+        <div class="card-body p-4 p-md-5">
+          <h2 class="card-title fw-bold">{{ restaurant.name }}</h2>
+          <p class="card-text fs-5 text-light opacity-75"><i class="bi bi-geo-alt"></i> {{ restaurant.address }}</p>
+          <p class="card-text"><i class="bi bi-telephone"></i> {{ restaurant.phone }}</p>
+          <div class="mt-4">
+            <a routerLink="/restaurants" class="btn btn-outline-light"><i class="bi bi-arrow-left"></i> Back to Restaurants</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu Section -->
+  <div class="row">
+    <!-- Sidebar: Categories -->
+    <div class="col-md-3 mb-4">
+      <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+        <div class="card-header bg-white border-bottom-0 pb-0 pt-3">
+          <h5 class="fw-bold">Categories</h5>
+        </div>
+        <div class="card-body p-2">
+          <div class="list-group list-group-flush">
+            <button *ngFor="let cat of categories" 
+                    class="list-group-item list-group-item-action border-0 rounded mb-1"
+                    [class.active]="selectedCategory === cat"
+                    [class.bg-primary]="selectedCategory === cat"
+                    [class.text-white]="selectedCategory === cat"
+                    (click)="selectCategory(cat)">
+              {{ cat }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content: Menu Items -->
+    <div class="col-md-9">
+      <h3 class="fw-bold mb-3 border-bottom pb-2">{{ selectedCategory }} Menu</h3>
+      
+      <div *ngIf="menuItems.length === 0" class="text-center py-5">
+        <p class="text-muted fs-5">No items found for this restaurant.</p>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" *ngIf="menuItems.length > 0">
+        <div class="col" *ngFor="let item of filteredMenu">
+          <app-menu-item-card [item]="item"></app-menu-item-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+/* Global Theme Styles for BurntBurrota */
+:root {
+  --bb-primary: #e65100; /* Burnt orange theme */
+  --bb-primary-hover: #ef6c00;
+  --bb-secondary: #212529;
+  --bb-light: #f8f9fa;
+  --bb-font: 'Poppins', sans-serif;
+}
+
+body {
+  font-family: var(--bb-font);
+  background-color: #f5f3ef; /* Matching BurntBrotta Reference Background */
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--bb-secondary);
+}
+
+.btn-primary {
+  background-color: var(--bb-primary) !important;
+  border-color: var(--bb-primary) !important;
+  box-shadow: 0 4px 6px rgba(230, 81, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--bb-primary-hover) !important;
+  border-color: var(--bb-primary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(230, 81, 0, 0.3);
+}
+
+.btn-outline-primary {
+  color: var(--bb-primary) !important;
+  border-color: var(--bb-primary) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--bb-primary) !important;
+  color: white !important;
+}
+
+.text-primary {
+  color: var(--bb-primary) !important;
+}
+
+.bg-primary {
+  background-color: var(--bb-primary) !important;
+}
+
+.card {
+  border-radius: 12px !important;
+  border: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04) !important;
+}
+
+/* Custom Hero Layout */
+.hero-section {
+  min-height: 480px;
+}
+
+.hero-title {
+  letter-spacing: -1px;
+}
+
+.decorative-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--bb-secondary);
+  border-radius: 50%;
+}
+
+.search-box {
+  max-width: 550px;
+}
